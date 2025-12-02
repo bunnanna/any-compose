@@ -1,20 +1,8 @@
-version: "3.9"
-
+name: batch
 services:
-  main:
-    build: .
-    container_name: main-controller
-    privileged: true
-    environment:
-      CRON_SCHEDULE: "* * * * *"
-      # CRON_LOG: "/var/log/cron/cron.log"
-      TASK_CMD: "docker compose run --rm app"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - .:/compose
-    working_dir: /compose
-
-  app:
+  app1:
     image: hello-world
-    container_name: hello-app
-    profiles: ["app"]
+    container_name: hello-app1
+  app2:
+    image: hello-world
+    container_name: hello-app2
