@@ -1,7 +1,7 @@
 FROM docker:27-dind
 
 # Install cron, bash, and other utilities
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash yq
 
 # Create default directories
 RUN mkdir -p /var/log/cron /compose

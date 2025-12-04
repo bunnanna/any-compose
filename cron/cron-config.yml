@@ -1,0 +1,8 @@
+cron-task:
+  - name: app1
+    CRON_SCHEDULE: "* * * * *"
+    TASK_CMD: "docker compose up app1"
+
+  - name: app2
+    CRON_SCHEDULE: "* * * * *"
+    TASK_CMD: "docker compose up app2"
