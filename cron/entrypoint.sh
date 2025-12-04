@@ -108,4 +108,4 @@ cat "$CRON_FILE"
 # Start cron + log
 # ------------------------------
 crond -f -l 2 &
-tail -F "$CRON_LOG"
+sleep infinity
