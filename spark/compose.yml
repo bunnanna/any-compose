@@ -1,29 +1,46 @@
+x-spark-common: &spark-common
+  build:
+    context: .
+  image: my-spark-uv:4.0.1
+  volumes:
+    - ./output:/output
+  networks:
+    - spark-net
+
 services:
   spark-master:
-    build: .
+    <<: *spark-common
     hostname: spark-master
     environment:
-      - SPARK_MODE=master
-      - SPARK_MASTER_HOST=spark-master
-      - SPARK_MASTER_PORT=7077
-      - SPARK_MASTER_WEBUI_PORT=8080
+      SPARK_ROLE: master
+      SPARK_MASTER_HOST: spark-master
+      SPARK_MASTER_PORT: 7077
+      SPARK_MASTER_WEBUI_PORT: 8080
     ports:
       - "7077:7077"
       - "8080:8080"
-    networks:
-      - spark-net
 
   spark-worker:
-    build: .
+    <<: *spark-common
     environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_HOST=spark-master
-      - SPARK_MASTER_PORT=7077
-      # Disable UI if you want
-      - SPARK_WORKER_WEBUI_PORT=0
-    networks:
-      - spark-net
+      SPARK_ROLE: worker
+      SPARK_MASTER_HOST: spark-master
+      SPARK_MASTER_PORT: 7077
+      SPARK_WORKER_WEBUI_PORT: 0
     scale: 5
+
+  spark-driver:
+    <<: *spark-common
+    environment:
+      SPARK_ROLE: driver
+      SPARK_MASTER_HOST: spark-master
+      SPARK_MASTER_PORT: 7077
+      JUPYTER_TOKEN: JUPYTER_TOKEN
+    volumes:
+      - .:/app
+      - ./output:/output
+    ports:
+      - "8888:8888"
 
 networks:
   spark-net:
